@@ -7,4 +7,11 @@
 # include <fcntl.h>
 # include "gnl/get_next_line.h"
 
+int     check_iden(char **tab);
+char    **collect_identifiers(char **file);
+char    *extract_newline(char *str);
+void    print_array(char **array);
+int     str_is_space(char *str);
+int     str_is_newline(char *str);
+
 #endif
