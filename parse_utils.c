@@ -38,7 +38,7 @@ int str_is_space(char *str)
     int i;
 
     i = 0;
-    while(str[i])
+    while(str && str[i])
     {
         if(str[i] != ' ')
             return(0);

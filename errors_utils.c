@@ -1,35 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   errors_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/30 23:50:18 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/03 22:50:27 by amoubare         ###   ########.fr       */
+/*   Created: 2022/11/04 11:45:51 by amoubare          #+#    #+#             */
+/*   Updated: 2022/11/04 11:54:18 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int main(int argc, char **argv)
+void	errors(int error)
 {
-    (void)argc;
-    int fd;
-    fd = open(argv[1], O_RDONLY);
-    int i;
+	if (error == 1)
+		ft_putstr_fd("invalide texture identifier\n", 2);
+	else if (error == 2)
+		ft_putstr_fd("invalide texture path\n", 2);
+	else if (error == 3)
+		ft_putstr_fd("wrong number of identifiers\n", 2);
+	exit(EXIT_FAILURE);
+}
 
-    i = 0;
-    char *line = get_next_line(fd);
-    char **file = malloc(sizeof(char *) * 100);
-    while(line)
-    {
-        line = extract_newline(line);
-        file[i] = line;
-        line = get_next_line(fd);
-        i++;
-    }
-    file = collect_identifiers(file);
-    check_iden(file);
-    return (0);
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	i;
+
+	i = 0;
+	if (s)
+	{
+		while (s[i])
+		{
+			write(fd, &s[i], 1);
+			i++;
+		}
+	}
 }

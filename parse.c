@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/03 23:39:59 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/04 11:57:52 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,13 @@ int	check_iden(char **tab)
         else if (tab[i][j] == 'F' || tab[i][j] == 'C')
             j++;
         else
-        {
-            printf("invalide texture identifier");
-            return (1);
-        }
+            errors(1);
         while(tab[i][j] == 32)
             j++;
         if ((tab[i][j] == '.' && tab[i][j + 1] == '/' )|| isdigit(tab[i][j]))
             j += 2;
         else
-        {
-            printf("invalide texture path");
-            return (1);
-        }
+            errors(2);
         i++;
 	}
     return (0);
@@ -89,10 +83,7 @@ char **collect_identifiers(char **file)
         i++;
     }
 	if(cf + tex != 6)
-	{
-		printf("wrong number of identifiers\n");
-		return(NULL);
-	}
+		errors(3);
 	tab[j] = NULL;
     return(tab);
 }

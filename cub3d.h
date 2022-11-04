@@ -13,5 +13,7 @@ char    *extract_newline(char *str);
 void    print_array(char **array);
 int     str_is_space(char *str);
 int     str_is_newline(char *str);
+void	errors(int error);
+void	ft_putstr_fd(char *s, int fd);
 
 #endif
