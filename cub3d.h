@@ -15,5 +15,6 @@ int     str_is_space(char *str);
 int     str_is_newline(char *str);
 void	errors(int error);
 void	ft_putstr_fd(char *s, int fd);
+char	**ft_split(char const *s, char c);
 
 #endif

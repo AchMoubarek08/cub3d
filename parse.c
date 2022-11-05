@@ -6,13 +6,51 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/04 11:57:52 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/06 00:45:39 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <ctype.h>
+int check_txt_path(char *path)
+{
+	int		i;
+	int		j;
+	int		fd;
+	char	*filename;
 
+	i = 0;
+	j = 0;
+	while(path[i] && path[i] == 32)
+		i++;
+	if (path[i] && path[i] == '.')
+	{
+		if (path[i + 1] && path[i + 1] == '/')
+			i += 2;
+	}
+	else
+		errors(2);
+	filename = (char *)malloc(sizeof(char ) * ft_strlen(&path[i]));
+	while(path[i] && path[i] != 32)
+	{
+		filename[j] = path[i];
+		i++;
+		j++;
+	}
+	fd = open(filename, O_RDONLY);
+	if(fd == -1)
+		errors(4);
+	return(0);
+}
+
+int	check_cf_colors(char *color)
+{
+	char **colors;
+
+	colors = ft_split(color, ',');
+	print_array(colors);
+	exit(0);
+}
 int	check_iden(char **tab)
 {
 	int	i;
@@ -27,19 +65,13 @@ int	check_iden(char **tab)
             || (tab[i][j] == 'W' && tab[i][j + 1] == 'E')
             || (tab[i][j] == 'E' && tab[i][j + 1] == 'A'))
         {
-                j += 2;
+            check_txt_path(ft_substr(tab[i], 2, ft_strlen(tab[i])));
         }
         else if (tab[i][j] == 'F' || tab[i][j] == 'C')
-            j++;
+			check_cf_colors(ft_substr(tab[i], 1, ft_strlen(tab[i])));
         else
             errors(1);
-        while(tab[i][j] == 32)
-            j++;
-        if ((tab[i][j] == '.' && tab[i][j + 1] == '/' )|| isdigit(tab[i][j]))
-            j += 2;
-        else
-            errors(2);
-        i++;
+		i++;
 	}
     return (0);
 }
