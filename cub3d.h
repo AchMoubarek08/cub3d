@@ -5,6 +5,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <ctype.h>
 # include "gnl/get_next_line.h"
 
 int     check_iden(char **tab);
@@ -16,5 +17,6 @@ int     str_is_newline(char *str);
 void	errors(int error);
 void	ft_putstr_fd(char *s, int fd);
 char	**ft_split(char const *s, char c);
+int	    ft_atoi(const char *str);
 
 #endif

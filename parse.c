@@ -6,12 +6,12 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/06 00:45:39 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/06 02:49:54 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <ctype.h>
+
 int check_txt_path(char *path)
 {
 	int		i;
@@ -23,11 +23,8 @@ int check_txt_path(char *path)
 	j = 0;
 	while(path[i] && path[i] == 32)
 		i++;
-	if (path[i] && path[i] == '.')
-	{
-		if (path[i + 1] && path[i + 1] == '/')
-			i += 2;
-	}
+	if (path[i] && path[i] == '.' && path[i + 1] && path[i + 1] == '/')
+		i += 2;
 	else
 		errors(2);
 	filename = (char *)malloc(sizeof(char ) * ft_strlen(&path[i]));
@@ -43,13 +40,28 @@ int check_txt_path(char *path)
 	return(0);
 }
 
-int	check_cf_colors(char *color)
+int	check_cf_colors(char *str)
 {
-	char **colors;
+	char	**colors;
+	int		i;
+	int		j;
+	int		R;
+	int		G;
+	int		B;
 
-	colors = ft_split(color, ',');
-	print_array(colors);
-	exit(0);
+	colors = ft_split(str, ',');
+	i = 0;
+	j = 0;
+	while(colors[i])
+	{
+		while(colors[i][j] == 32)
+			i++;
+		if (isdigit(colors[i][j]))
+		{
+			return(1);
+		}
+	}
+	return(0);
 }
 int	check_iden(char **tab)
 {
