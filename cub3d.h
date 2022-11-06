@@ -18,5 +18,6 @@ void	errors(int error);
 void	ft_putstr_fd(char *s, int fd);
 char	**ft_split(char const *s, char c);
 int	    ft_atoi(const char *str);
+int	    is_digit(char c);
 
 #endif

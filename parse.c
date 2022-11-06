@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/06 02:49:54 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/06 16:16:42 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,24 @@ int check_txt_path(char *path)
 int	check_cf_colors(char *str)
 {
 	char	**colors;
-	int		i;
-	int		j;
-	int		R;
-	int		G;
-	int		B;
+	// int		i;
+	// int		j;
 
 	colors = ft_split(str, ',');
-	i = 0;
-	j = 0;
-	while(colors[i])
-	{
-		while(colors[i][j] == 32)
-			i++;
-		if (isdigit(colors[i][j]))
-		{
-			return(1);
-		}
-	}
+	print_array(colors);
 	return(0);
+	// i = 0;
+	// j = 0;
+	// while(colors[i])
+	// {
+	// 	while(colors[i][j] == 32)
+	// 		i++;
+	// 	if (is_digit(colors[i][j]))
+	// 	{
+	// 		return(1);
+	// 	}
+	// }
+	// return(0);
 }
 int	check_iden(char **tab)
 {
@@ -72,7 +71,7 @@ int	check_iden(char **tab)
 	while(tab[i])
 	{
         j = 0;
-        if ((tab[i][j] == 'N' && tab[i][j + 1] == 'O') 
+        if ((tab[i][j] == 'N' && tab[i][j + 1] == 'O')
             || (tab[i][j] == 'S' && tab[i][j + 1] == 'O')
             || (tab[i][j] == 'W' && tab[i][j + 1] == 'E')
             || (tab[i][j] == 'E' && tab[i][j + 1] == 'A'))
@@ -87,6 +86,24 @@ int	check_iden(char **tab)
 	}
     return (0);
 }
+
+int	is_identifier(char **file, int i)
+{
+	if (ft_int_strchr(file[i], 'N') != -1 
+		&& ft_int_strchr(file[i], 'O') != -1)
+		return (1);
+	else if (ft_int_strchr(file[i], 'S') != -1 
+		&& ft_int_strchr(file[i], 'O') != -1)
+		return (2);
+	else if (ft_int_strchr(file[i], 'W') != -1
+		&& ft_int_strchr(file[i], 'E') != -1)
+		return (3);
+	else if (ft_int_strchr(file[i], 'E') != -1
+		&& ft_int_strchr(file[i], 'A') != -1)
+		return (4);
+	return(0);
+}
+
 char **collect_identifiers(char **file)
 {
 	int		i;
@@ -109,10 +126,7 @@ char **collect_identifiers(char **file)
         }
         else
         {
-            if(ft_int_strchr(file[i], 'N') != -1
-                || ft_int_strchr(file[i], 'S') != -1
-                || ft_int_strchr(file[i], 'W' ) != -1
-                || ft_int_strchr(file[i], 'E') != -1)
+            if (is_identifier(file, i))
             {
 				tab[j] = file[i];
                 tex++;
@@ -126,8 +140,8 @@ char **collect_identifiers(char **file)
 		j++;
         i++;
     }
-	if(cf + tex != 6)
+	if (cf + tex != 6)
 		errors(3);
 	tab[j] = NULL;
-    return(tab);
+    return (tab);
 }

@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:32:42 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/03 22:32:57 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/06 16:05:35 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,14 @@ void    print_array(char **array)
         i++;
     }
 }
+
+int	is_digit(char c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+}
+
 int str_is_space(char *str)
 {
     int i;
