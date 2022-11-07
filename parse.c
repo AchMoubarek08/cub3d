@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/06 16:16:42 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/07 16:53:21 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,75 @@ int check_txt_path(char *path)
 		errors(4);
 	return(0);
 }
+char	*remove_spaces(char *colors)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+
+	while(colors[i] && colors[i] == 32)
+		i++;
+	while(colors[i] && colors[i] != 32)
+	{
+		colors[j] = colors[i];
+		j++;
+		i++;
+	}
+	while(colors[i])
+	{
+		if (colors[i] != 32)
+			errors(7);
+		i++;
+	}
+	colors[j] = '\0';
+	return(0);
+}
+
+int	str_is_digit(char *str)
+{
+	int	i;
+
+	i = 0;
+	while(str[i])
+	{
+		if (!is_digit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int in_range(char *str)
+{
+	int numb;
+	numb = ft_atoi(str);
+	if (numb >= 0 && numb <= 255)
+		return(0);
+	return(1);
+}
 
 int	check_cf_colors(char *str)
 {
 	char	**colors;
-	// int		i;
-	// int		j;
+	int		i;
 
 	colors = ft_split(str, ',');
-	print_array(colors);
+	i = 0;
+	while(colors[i])
+	{
+		remove_spaces(colors[i]);
+		i++;
+	}
+	i = 0;
+	while(colors[i])
+	{
+		if (!str_is_digit(colors[i]) && !in_range(colors[i]))
+			errors(6);
+		i++;
+	}
 	return(0);
-	// i = 0;
-	// j = 0;
-	// while(colors[i])
-	// {
-	// 	while(colors[i][j] == 32)
-	// 		i++;
-	// 	if (is_digit(colors[i][j]))
-	// 	{
-	// 		return(1);
-	// 	}
-	// }
-	// return(0);
 }
 int	check_iden(char **tab)
 {
@@ -94,13 +141,13 @@ int	is_identifier(char **file, int i)
 		return (1);
 	else if (ft_int_strchr(file[i], 'S') != -1 
 		&& ft_int_strchr(file[i], 'O') != -1)
-		return (2);
+		return (1);
 	else if (ft_int_strchr(file[i], 'W') != -1
 		&& ft_int_strchr(file[i], 'E') != -1)
-		return (3);
+		return (1);
 	else if (ft_int_strchr(file[i], 'E') != -1
 		&& ft_int_strchr(file[i], 'A') != -1)
-		return (4);
+		return (1);
 	return(0);
 }
 
