@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 00:41:55 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/07 16:32:38 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/10 10:52:15 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,22 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (k * a);
+}
+
+int	ft_int_strrchr(const char *s, int c)
+{
+	int	len_s;
+
+	len_s = ft_strlen(s);
+	if (!s)
+		return (-1);
+	if ((char)c == '\0' && s[0] == '\0')
+		return (-1);
+	while (len_s != 0)
+	{
+		if (s[len_s] == (char)c)
+			return (len_s);
+		len_s--;
+	}
+	return (-1);
 }

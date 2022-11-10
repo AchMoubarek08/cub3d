@@ -1,9 +1,9 @@
-NO       ./pipi.xpm          
+NO       ./pi  pi.xpm
 SO      ./popo.xpm           
 WE     ./skrrr.xpm          
 EA      ./grr.xpm              
 
-F        100,10,0     2
+F        100,10,0
 
 
 

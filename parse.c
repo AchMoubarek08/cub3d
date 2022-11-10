@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/07 16:53:21 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/10 11:43:18 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,15 @@ int check_txt_path(char *path)
 	int		fd;
 	char	*filename;
 
-	i = 0;
-	j = 0;
-	while(path[i] && path[i] == 32)
-		i++;
-	if (path[i] && path[i] == '.' && path[i + 1] && path[i + 1] == '/')
-		i += 2;
-	else
+	i = ft_int_strchr(path, '.');
+	j = ft_int_strrchr(path, 'm');
+	if (j == -1)
+		errors(5);
+	if(i == -1 || (path[i + 1] && path[i + 1] != '/'))
 		errors(2);
-	filename = (char *)malloc(sizeof(char ) * ft_strlen(&path[i]));
-	while(path[i] && path[i] != 32)
-	{
-		filename[j] = path[i];
-		i++;
-		j++;
-	}
-	fd = open(filename, O_RDONLY);
+	filename = ft_substr(path, i, j - i + 1);
+	check_filename(filename + 2, 2);
+	fd = open(filename + 2, O_RDONLY);
 	if(fd == -1)
 		errors(4);
 	return(0);

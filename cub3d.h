@@ -8,16 +8,19 @@
 # include <ctype.h>
 # include "gnl/get_next_line.h"
 
-int     check_iden(char **tab);
-char    **collect_identifiers(char **file);
-char    *extract_newline(char *str);
-void    print_array(char **array);
+int	    is_digit(char c);
 int     str_is_space(char *str);
 int     str_is_newline(char *str);
-void	errors(int error);
-void	ft_putstr_fd(char *s, int fd);
+char    *extract_newline(char *str);
 char	**ft_split(char const *s, char c);
 int	    ft_atoi(const char *str);
-int	    is_digit(char c);
+int	    ft_int_strrchr(const char *s, int c);
+void	errors(int error);
+void	ft_putstr_fd(char *s, int fd);
+void    print_array(char **array);
+
+void	check_filename(char *str, int ex);
+char    **collect_identifiers(char **file);
+int     check_iden(char **tab);
 
 #endif

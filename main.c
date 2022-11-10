@@ -6,13 +6,13 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 23:50:18 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/06 02:50:57 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/10 11:43:41 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	check_filename(char *str)
+void	check_filename(char *str, int ex)
 {
 	int	i;
 
@@ -23,8 +23,20 @@ void	check_filename(char *str)
 			break ;
 		i++;
 	}
-	if (strcmp(str + i, ".cub") != 0)
-		errors(5);
+    if (ex == 1)
+    {
+	    if (strcmp(str + i, ".cub") != 0)
+        {
+	        errors(5);
+        }
+    }
+    else if (ex == 2)
+    {
+        if (strcmp(str + i, ".xpm") != 0)
+        {
+            errors(5);
+        }
+    }
 }
 
 int main(int argc, char **argv)
@@ -35,7 +47,7 @@ int main(int argc, char **argv)
 
     i = 0;
     if (argv[1])
-        check_filename(argv[1]);
+        check_filename(argv[1], 1);
     fd = open(argv[1], O_RDONLY);
     char *line = get_next_line(fd);
     char **file = malloc(sizeof(char *) * 100);
