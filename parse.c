@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/10 11:43:18 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/10 12:04:45 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,40 @@ int	is_identifier(char **file, int i)
 	return(0);
 }
 
+char **collect_map(char **file)
+{
+	// int		i;
+	// int		j;
+	// char	**map;
+
+	// i = 0;
+	// j = 0;
+	// while(file[i])
+	// {
+	// 	if (is_identifier(file, i))
+	// 		i++;
+	// 	else
+	// 		break;
+	// }
+	// while(file[i])
+	// 	i++;
+	// map = malloc(sizeof(char *) * (i + 1));
+	// i = 0;
+	// while(file[i])
+	// {
+	// 	if (is_identifier(file, i))
+	// 		i++;
+	// 	else
+	// 	{
+	// 		map[j] = ft_strdup(file[i]);
+	// 		i++;
+	// 		j++;
+	// 	}
+	// }
+	// map[j] = NULL;
+	// return(map);
+}
+
 char **collect_identifiers(char **file)
 {
 	int		i;
@@ -156,7 +190,7 @@ char **collect_identifiers(char **file)
 	j = 0;
 	tex = 0;
 	cf = 0;
-	tab = malloc(sizeof(char *) * 1000);
+	tab = malloc(sizeof(char *) * 6);
     while(file[i])
     {
         if (str_is_space(file[i]) || str_is_newline(file[i]))

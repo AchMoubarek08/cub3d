@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 23:50:18 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/10 11:43:41 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/10 11:48:34 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,12 @@ void	check_filename(char *str, int ex)
     if (ex == 1)
     {
 	    if (strcmp(str + i, ".cub") != 0)
-        {
 	        errors(5);
-        }
     }
     else if (ex == 2)
     {
         if (strcmp(str + i, ".xpm") != 0)
-        {
             errors(5);
-        }
     }
 }
 
@@ -60,5 +56,6 @@ int main(int argc, char **argv)
     }
     file = collect_identifiers(file);
     check_iden(file);
+    // file = collect_map(file);
     return (0);
 }
