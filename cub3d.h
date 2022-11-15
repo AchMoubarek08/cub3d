@@ -22,5 +22,6 @@ void    print_array(char **array);
 void	check_filename(char *str, int ex);
 char    **collect_identifiers(char **file);
 int     check_iden(char **tab);
+char    **collect_map(char **file);
 
 #endif

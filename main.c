@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 23:50:18 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/10 11:48:34 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/14 18:44:45 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int main(int argc, char **argv)
     fd = open(argv[1], O_RDONLY);
     char *line = get_next_line(fd);
     char **file = malloc(sizeof(char *) * 100);
+    char **map = malloc(sizeof(char *) * 100);
+    map = file;
     while(line)
     {
         line = extract_newline(line);
@@ -56,6 +58,7 @@ int main(int argc, char **argv)
     }
     file = collect_identifiers(file);
     check_iden(file);
-    // file = collect_map(file);
+    map = collect_map(map);
+    print_array(map);
     return (0);
 }

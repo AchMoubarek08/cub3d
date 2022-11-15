@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/10 12:04:45 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/14 18:49:52 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,13 @@ int	check_iden(char **tab)
     return (0);
 }
 
+int	is_cellingfloor(char **file, int i)
+{
+	if(ft_int_strchr(file[i], 'F') != -1 || ft_int_strchr(file[i], 'C') != -1)
+		return (1);
+	return (0);
+}
+
 int	is_identifier(char **file, int i)
 {
 	if (ft_int_strchr(file[i], 'N') != -1 
@@ -144,38 +151,45 @@ int	is_identifier(char **file, int i)
 	return(0);
 }
 
+int	is_mapline(char **file, int i)
+{
+	if (is_identifier(file, i) || is_cellingfloor(file, i) || str_is_newline(file[i]) || str_is_space(file[i]))
+		return (0);
+	return (1);
+}
+
 char **collect_map(char **file)
 {
-	// int		i;
-	// int		j;
-	// char	**map;
+	int		i;
+	int		j;
+	char	**map;
 
-	// i = 0;
-	// j = 0;
-	// while(file[i])
-	// {
-	// 	if (is_identifier(file, i))
-	// 		i++;
-	// 	else
-	// 		break;
-	// }
-	// while(file[i])
-	// 	i++;
-	// map = malloc(sizeof(char *) * (i + 1));
-	// i = 0;
-	// while(file[i])
-	// {
-	// 	if (is_identifier(file, i))
-	// 		i++;
-	// 	else
-	// 	{
-	// 		map[j] = ft_strdup(file[i]);
-	// 		i++;
-	// 		j++;
-	// 	}
-	// }
-	// map[j] = NULL;
-	// return(map);
+	i = 0;
+	j = 0;
+	while(file[i])
+	{
+		if (!is_mapline(file, i))
+			i++;
+		else
+			break;
+	}
+	while(file[i])
+		i++;
+	map = malloc(sizeof(char *) * (i + 1));
+	i = 0;
+	while(file[i])
+	{
+		if (!is_mapline(file, i))
+			i++;
+		else
+		{
+			map[j] = ft_strdup(file[i]);
+			i++;
+			j++;
+		}
+	}
+	map[j] = NULL;
+	return(map);
 }
 
 char **collect_identifiers(char **file)
@@ -191,7 +205,7 @@ char **collect_identifiers(char **file)
 	tex = 0;
 	cf = 0;
 	tab = malloc(sizeof(char *) * 6);
-    while(file[i])
+    while (file[i])
     {
         if (str_is_space(file[i]) || str_is_newline(file[i]))
         {
@@ -205,16 +219,20 @@ char **collect_identifiers(char **file)
 				tab[j] = file[i];
                 tex++;
             }
-            else if(ft_int_strchr(file[i], ',') != -1)
+            else if (ft_int_strchr(file[i], ',') != -1)
 			{
 				tab[j] = file[i];
                 cf++;
 			}
+			else if (!str_is_newline(file[i]) && !str_is_space(file[i]))
+				errors(3); 
         }
 		j++;
         i++;
+		if (tex == 4 && cf == 2)
+			break;
     }
-	if (cf + tex != 6)
+	if (tex != 4 || cf != 2)
 		errors(3);
 	tab[j] = NULL;
     return (tab);
