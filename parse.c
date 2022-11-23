@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/23 19:18:25 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/23 19:42:52 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,10 +156,18 @@ int	is_mapchar(char c)
 		return (1);
 	return (0);
 }
+
 int	is_mapline(char **file, int i)
 {
-	if(is_identifier(file, i) || is_cellingfloor(file, i))
-		return (0);
+	int j;
+	j = 0;
+	while(file[i][j])
+	{
+		if (is_mapchar(file[i][j]))
+			j++;
+		else
+			return (0);
+	}
 	return (1);
 }
 

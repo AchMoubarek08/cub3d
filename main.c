@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 23:50:18 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/23 19:04:55 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/23 19:55:51 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,20 @@ void	check_filename(char *str, int ex)
             errors(5);
     }
 }
+int check_map(char **map)
+{
+    int i;
 
+    i = 0;
+    while(map[i])
+    {
+        if(is_mapline(map, i))
+            i++;
+        else
+            errors(8);
+    }
+    return (0);
+}
 int main(int argc, char **argv)
 {
     (void)argc;
@@ -59,6 +72,6 @@ int main(int argc, char **argv)
     file = collect_identifiers(file);
     check_iden(file);
     map = collect_map(map);
-    print_array(map);
+    check_map(map);
     return (0);
 }

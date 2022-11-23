@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 11:45:51 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/07 16:55:02 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/23 19:56:18 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	errors(int error)
 		ft_putstr_fd("Couleur(s) RGB hors intervalle\n", 2);
 	else if (error == 7)
 		ft_putstr_fd("Couleur(s) RGB invalide\n", 2);
+	else if (error == 8)
+		ft_putstr_fd("map invalide\n", 2);
 	exit(EXIT_FAILURE);
 }
 
