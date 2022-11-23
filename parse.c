@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/14 18:49:52 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/23 19:18:25 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,10 +150,15 @@ int	is_identifier(char **file, int i)
 		return (1);
 	return(0);
 }
-
+int	is_mapchar(char c)
+{
+	if (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'W' || c == 'E' || c == ' ')
+		return (1);
+	return (0);
+}
 int	is_mapline(char **file, int i)
 {
-	if (is_identifier(file, i) || is_cellingfloor(file, i) || str_is_newline(file[i]) || str_is_space(file[i]))
+	if(is_identifier(file, i) || is_cellingfloor(file, i))
 		return (0);
 	return (1);
 }
@@ -167,21 +172,21 @@ char **collect_map(char **file)
 	i = 0;
 	j = 0;
 	while(file[i])
-	{
-		if (!is_mapline(file, i))
-			i++;
-		else
-			break;
-	}
-	while(file[i])
 		i++;
 	map = malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while(file[i])
 	{
-		if (!is_mapline(file, i))
+		if (is_cellingfloor(file, i) || is_identifier(file, i) || str_is_newline(file[i]) || str_is_space(file[i]))
 			i++;
 		else
+			break;
+	}
+	while(file[i])
+	{
+		while (!is_mapline(file, i))
+			i++;
+		while(file[i])
 		{
 			map[j] = ft_strdup(file[i]);
 			i++;
@@ -224,13 +229,13 @@ char **collect_identifiers(char **file)
 				tab[j] = file[i];
                 cf++;
 			}
+			else if(is_mapline(file, i))
+				break;
 			else if (!str_is_newline(file[i]) && !str_is_space(file[i]))
-				errors(3); 
+				errors(3);
         }
 		j++;
         i++;
-		if (tex == 4 && cf == 2)
-			break;
     }
 	if (tex != 4 || cf != 2)
 		errors(3);
