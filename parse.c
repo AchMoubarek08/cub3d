@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/23 19:42:52 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/23 23:55:37 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,7 @@ char **collect_identifiers(char **file)
 	j = 0;
 	tex = 0;
 	cf = 0;
-	tab = malloc(sizeof(char *) * 6);
+	tab = malloc(sizeof(char *) * 7);
     while (file[i])
     {
         if (str_is_space(file[i]) || str_is_newline(file[i]))
