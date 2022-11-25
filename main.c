@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 23:50:18 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/24 22:04:46 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/25 02:52:06 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,32 +35,69 @@ void	check_filename(char *str, int ex)
     }
 }
 
-int	check_around(char **map, int i, int j)
-{
-	if ((map[i - 1] && map[i - 1][j] && map[i - 1][j] == ' ') || (map[i + 1] && map[i + 1][j] && map[i + 1][j] == ' ') || (map[i] && map[i][j - 1] && map[i][j - 1] == ' ') || (map[i][j + 1] && map[i][j + 1] == ' '))
-		return(1);
-	return(0);
-}
-
 int	check_closed(char **map, int i)
 {
-	int j;
+    int j;
 
-	j = 0;
-	while(map[i][j])
-	{
-		if (map[i][j] == '0' || map[i][j] == 'W' || map[i][j] == 'E' || map[i][j] == 'N' || map[i][j] == 'S')
-			if(check_around(map, i, j))
-				errors(9);
-		j++;
-	}
-	return(0);
+    j = 0;
+    if(!map[i + 1])
+        errors(9);
+    while(map[i][j])
+    {
+        if(map[i][j] == '0')
+        {
+            if (!map[i][j + 1] || !map[i][j - 1])
+                errors(9);
+            else if(map[i][j + 1] == ' ' || map[i][j - 1] == ' ')
+                errors(9);
+            if(!map[i - 1][j] || !map[i + 1][j])
+                errors(9);
+            else if (map[i + 1][j] == ' ' || map[i - 1][j] == ' ')
+                errors(9);
+        }
+        j++;
+    }
+    return (0);
 }
-int is_nothing(char *str)
+
+int check_first_line(char *map)
 {
-	if(strcmp(str, ""))
-		return(1);
-	return(0);
+    int i;
+
+    i = 0;
+    while (map[i])
+    {
+        if (map[i] == '0')
+            errors(9);
+        i++;
+    }
+    return(0);
+}
+int there_is_zero(char **map, int i)
+{
+    int j;
+
+    j = 0;
+    while (map[i][j])
+    {
+        if (map[i][j] == '0')
+            return (1);
+        j++;
+    }
+    return (0);
+}
+
+int check_upcoming_lines(char **map, int i)
+{
+    i++;
+    while(map[i])
+    {
+        if(strcmp(map[i], ""))
+            errors(8);
+        i++;
+    }
+    return (0);
+
 }
 int check_map(char **map)
 {
@@ -69,18 +106,13 @@ int check_map(char **map)
     i = 0;
     while(map[i])
     {
-        if(i != 0 && (is_nothing(map[i]) || !is_mapline(map, i)))
-		{
-			while(map[i])
-			{
-				if(!is_nothing(map[i]))
-            		errors(8);
-				i++;
-			}
-		}
-        else if(!is_mapline(map, i))
+        if(strcmp(map[i], "") == 0)
+            check_upcoming_lines(map, i);
+        if(!is_mapline(map, i))
             errors(8);
-        else
+        if(i == 0)
+            check_first_line(map[i]);
+        else if(there_is_zero(map, i))
             check_closed(map, i);
         i++;
     }
@@ -111,8 +143,6 @@ int main(int argc, char **argv)
     file = collect_identifiers(file);
     check_iden(file);
     map = collect_map(map);
-    print_array(map);
-    exit(0);
     check_map(map);
     return (0);
 }
