@@ -6,13 +6,13 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/23 23:55:37 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/26 17:52:31 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int check_txt_path(char *path)
+int check_txt_path(char *path, t_data *data)
 {
 	int		i;
 	int		j;
@@ -102,7 +102,7 @@ int	check_cf_colors(char *str)
 	}
 	return(0);
 }
-int	check_iden(char **tab)
+int	check_iden(char **tab, t_data *data)
 {
 	int	i;
     int j;
@@ -116,7 +116,7 @@ int	check_iden(char **tab)
             || (tab[i][j] == 'W' && tab[i][j + 1] == 'E')
             || (tab[i][j] == 'E' && tab[i][j + 1] == 'A'))
         {
-            check_txt_path(ft_substr(tab[i], 2, ft_strlen(tab[i])));
+            check_txt_path(ft_substr(tab[i], 2, ft_strlen(tab[i])), data);
         }
         else if (tab[i][j] == 'F' || tab[i][j] == 'C')
 			check_cf_colors(ft_substr(tab[i], 1, ft_strlen(tab[i])));
@@ -129,8 +129,10 @@ int	check_iden(char **tab)
 
 int	is_cellingfloor(char **file, int i)
 {
-	if(ft_int_strchr(file[i], 'F') != -1 || ft_int_strchr(file[i], 'C') != -1)
+	if(ft_int_strchr(file[i], 'C') != -1)
 		return (1);
+	else if(ft_int_strchr(file[i], 'F') != -1)
+		return (2);
 	return (0);
 }
 
@@ -141,13 +143,13 @@ int	is_identifier(char **file, int i)
 		return (1);
 	else if (ft_int_strchr(file[i], 'S') != -1 
 		&& ft_int_strchr(file[i], 'O') != -1)
-		return (1);
+		return (2);
 	else if (ft_int_strchr(file[i], 'W') != -1
 		&& ft_int_strchr(file[i], 'E') != -1)
-		return (1);
+		return (3);
 	else if (ft_int_strchr(file[i], 'E') != -1
 		&& ft_int_strchr(file[i], 'A') != -1)
-		return (1);
+		return (4);
 	return(0);
 }
 int	is_mapchar(char c)

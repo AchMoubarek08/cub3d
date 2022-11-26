@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 23:50:18 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/25 02:52:06 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/26 19:42:09 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,133 @@ int check_map(char **map)
     }
     return (0);
 }
+void    fill_cf_colors(t_data *data, char *line, int x)
+{
+    char **colors;
+    int i;
+    int R;
+    int G;
+    int B;
+
+    colors = ft_split(line, ',');
+    i = 0;
+    while(colors[i])
+    {
+        remove_spaces(colors[i]);
+        i++;
+    }
+    R = ft_atoi(colors[0]);
+    G = ft_atoi(colors[1]);
+    B = ft_atoi(colors[2]);
+    if(x == 1)
+        data->cell = (R << 16) + (G << 8) + B;
+    else if(x == 2)
+        data->floor = (R << 16) + (G << 8) + B;
+}
+void    fill_iden(t_data *data, char **file)
+{
+    int i;
+    int start;
+    int end;
+
+    i = 0;
+    while (file[i])
+    {
+        start = ft_int_strchr(file[i], '.');
+        end = ft_int_strrchr(file[i], 'm');
+        if (is_identifier(file, i) == 1)
+            data->no = ft_substr(file[i], start, end - start + 1);
+        else if (is_identifier(file, i) == 2)
+            data->so = ft_substr(file[i], start, end - start + 1);
+        else if (is_identifier(file, i) ==  3)
+            data->we = ft_substr(file[i], start, end - start + 1);
+        else if(is_identifier(file, i) == 4)
+            data->ea = ft_substr(file[i], start, end - start + 1);
+        else if(is_cellingfloor(file, i) == 1)
+            fill_cf_colors(data, file[i] + 1, 1);
+        else if(is_cellingfloor(file, i) == 2)
+            fill_cf_colors(data, file [i] + 1, 2);
+        i++;   
+    }
+}
+
+void    get_height_width(t_data *data, char **map)
+{
+    int i;
+
+    i = 0;
+    while(map[i] && is_mapline(map, i) && strcmp(map[i], ""))
+    {
+        if (ft_strlen(map[i]) > data->width)
+            data->width = ft_strlen(map[i]);
+        i++;
+    }
+    data->height = i;
+}
+void    print_int_tab(int **tab, int width, int height)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (i < height)
+    {
+        j = 0;
+        while (j < width)
+        {
+            printf("%d", tab[i][j]);
+            j++;
+        }
+        printf("\n");
+        i++;
+    }
+}
+void    fill_map(t_data *data, char **map)
+{
+    int i;
+    int j;
+
+    i = 0;
+    get_height_width(data, map);
+    data->map = malloc(sizeof(int *) * (data->height + 1));
+    while(map[i])
+    {
+        data->map[i] = malloc(sizeof(int) * (data->width + 1));
+        j = 0;
+        while(map[i][j])
+        {
+            if (map[i][j] == '0')
+                data->map[i][j] = 0;
+            else if (map[i][j] == '1')
+                data->map[i][j] = 1;
+            else if (map[i][j] == ' ')
+                data->map[i][j] = 2;
+            else if (map[i][j] == 'N')
+                data->map[i][j] = 3;
+            else if (map[i][j] == 'S')
+                data->map[i][j] = 4;
+            else if (map[i][j] == 'E')
+                data->map[i][j] = 5;
+            else if (map[i][j] == 'W')
+                data->map[i][j] = 6;
+            j++;
+        }
+        while(j < data->width)
+        {
+            data->map[i][j] = 2;
+            j++;
+        }
+        i++;
+    }
+    data->map[i] = NULL;
+}
 int main(int argc, char **argv)
 {
     (void)argc;
     int i;
     int fd;
+    t_data data;
+    
 
     i = 0;
     if (argv[1])
@@ -141,8 +263,11 @@ int main(int argc, char **argv)
     }
     file[i] = NULL;
     file = collect_identifiers(file);
-    check_iden(file);
+    check_iden(file, &data);
     map = collect_map(map);
     check_map(map);
+    fill_iden(&data, file);
+    fill_map(&data, map);
+    print_int_tab(data.map, data.width, data.height);
     return (0);
 }
