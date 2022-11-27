@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 23:50:18 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/27 18:52:46 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/27 19:22:14 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,10 +247,22 @@ void    fill_map(t_data *data, char **map)
     }
     data->map[i] = NULL;
     if(p != 1)
-    {
-        printf("%d\n", p);
         errors(10);
-    }
+}
+void    print_data(t_data data)
+{
+    printf("NO texture : %s\n", data.no);
+    printf("SO texture : %s\n", data.so);
+    printf("WE texture : %s\n", data.we);
+    printf("EA texture : %s\n", data.ea);
+    printf("X_Pos      : %d\n", data.x);
+    printf("Y_Pos      : %d\n", data.y);
+    printf("E_DIR      : %d\n", data.e_dir);
+    printf("Ceil color : %d\n", data.cell);
+    printf("Floor color: %d\n", data.floor);
+    printf("Map width  : %d\n", data.width);
+    printf("Map height : %d\n", data.height);
+    print_int_tab(data.map, data.width, data.height);
 }
 int main(int argc, char **argv)
 {
@@ -282,7 +294,6 @@ int main(int argc, char **argv)
     check_map(map);
     fill_iden(&data, file);
     fill_map(&data, map);
-    print_int_tab(data.map, data.width, data.height);
-    printf("%d\n%d\n%d\n", data.e_dir, data.x, data.y);
+    print_data(data);
     return (0);
 }
