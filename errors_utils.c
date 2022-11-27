@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 11:45:51 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/26 16:42:06 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/27 18:39:55 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	errors(int error)
 		ft_putstr_fd("Map invalide\n", 2);
 	else if (error == 9)
 		ft_putstr_fd("Map non fermée\n", 2);
+	else if (error == 10)
+		ft_putstr_fd("More or less than one player\n", 2);
 	exit(EXIT_FAILURE);
 }
 

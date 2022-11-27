@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 23:50:18 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/26 19:42:09 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/27 18:52:46 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,11 +203,13 @@ void    fill_map(t_data *data, char **map)
 {
     int i;
     int j;
+    int p;
 
     i = 0;
+    p = 0;
     get_height_width(data, map);
     data->map = malloc(sizeof(int *) * (data->height + 1));
-    while(map[i])
+    while(map[i] && is_mapline(map, i))
     {
         data->map[i] = malloc(sizeof(int) * (data->width + 1));
         j = 0;
@@ -219,14 +221,21 @@ void    fill_map(t_data *data, char **map)
                 data->map[i][j] = 1;
             else if (map[i][j] == ' ')
                 data->map[i][j] = 2;
-            else if (map[i][j] == 'N')
-                data->map[i][j] = 3;
-            else if (map[i][j] == 'S')
-                data->map[i][j] = 4;
-            else if (map[i][j] == 'E')
-                data->map[i][j] = 5;
-            else if (map[i][j] == 'W')
-                data->map[i][j] = 6;
+            else
+            {
+                p++;
+                data->x = j;
+                data->y = i;
+                if (map[i][j] == 'N')
+                    data->map[i][j] = 3;
+                else if (map[i][j] == 'S')
+                    data->map[i][j] = 4;
+                else if (map[i][j] == 'E')
+                    data->map[i][j] = 5;
+                else if (map[i][j] == 'W')
+                    data->map[i][j] = 6;
+                data->e_dir = data->map[i][j] - 3;
+            }
             j++;
         }
         while(j < data->width)
@@ -237,6 +246,11 @@ void    fill_map(t_data *data, char **map)
         i++;
     }
     data->map[i] = NULL;
+    if(p != 1)
+    {
+        printf("%d\n", p);
+        errors(10);
+    }
 }
 int main(int argc, char **argv)
 {
@@ -269,5 +283,6 @@ int main(int argc, char **argv)
     fill_iden(&data, file);
     fill_map(&data, map);
     print_int_tab(data.map, data.width, data.height);
+    printf("%d\n%d\n%d\n", data.e_dir, data.x, data.y);
     return (0);
 }
