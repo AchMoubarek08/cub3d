@@ -8,6 +8,15 @@
 # include <ctype.h>
 # include "gnl/get_next_line.h"
 
+typedef struct s_vars 
+{
+    int		i;
+	int		tex;
+	int		cf;
+	char	**tab;
+	int		j;
+}				t_vars;
+
 typedef struct s_data
 {
     int cell;

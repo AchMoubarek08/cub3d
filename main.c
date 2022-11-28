@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 23:50:18 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/27 19:22:14 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/28 02:24:36 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,9 @@ void    fill_cf_colors(t_data *data, char *line, int x)
 {
     char **colors;
     int i;
-    int R;
-    int G;
-    int B;
+    int r;
+    int g;
+    int b;
 
     colors = ft_split(line, ',');
     i = 0;
@@ -133,13 +133,13 @@ void    fill_cf_colors(t_data *data, char *line, int x)
         remove_spaces(colors[i]);
         i++;
     }
-    R = ft_atoi(colors[0]);
-    G = ft_atoi(colors[1]);
-    B = ft_atoi(colors[2]);
+    r = ft_atoi(colors[0]);
+    g = ft_atoi(colors[1]);
+    b = ft_atoi(colors[2]);
     if(x == 1)
-        data->cell = (R << 16) + (G << 8) + B;
+        data->cell = (r << 16) + (g << 8) + b;
     else if(x == 2)
-        data->floor = (R << 16) + (G << 8) + B;
+        data->floor = (r << 16) + (g << 8) + b;
 }
 void    fill_iden(t_data *data, char **file)
 {
@@ -199,6 +199,35 @@ void    print_int_tab(int **tab, int width, int height)
         i++;
     }
 }
+
+int fill_tab(t_data *data, char **map, int i, int *j)
+{
+    static int p;
+
+    if (map[i][*j] == '0')
+        data->map[i][*j] = 0;
+    else if (map[i][*j] == '1')
+        data->map[i][*j] = 1;
+    else if (map[i][*j] == ' ')
+        data->map[i][*j] = 2;
+    else
+    {
+        p++;
+        data->x = *j;
+        data->y = i;
+        if (map[i][*j] == 'N')
+            data->map[i][*j] = 3;
+        else if (map[i][*j] == 'S')
+            data->map[i][*j] = 4;
+        else if (map[i][*j] == 'E')
+            data->map[i][*j] = 5;
+        else if (map[i][*j] == 'W')
+            data->map[i][*j] = 6;
+        data->e_dir = data->map[i][*j] - 3;
+    }
+    (*j)++;
+    return(p);
+}
 void    fill_map(t_data *data, char **map)
 {
     int i;
@@ -214,30 +243,7 @@ void    fill_map(t_data *data, char **map)
         data->map[i] = malloc(sizeof(int) * (data->width + 1));
         j = 0;
         while(map[i][j])
-        {
-            if (map[i][j] == '0')
-                data->map[i][j] = 0;
-            else if (map[i][j] == '1')
-                data->map[i][j] = 1;
-            else if (map[i][j] == ' ')
-                data->map[i][j] = 2;
-            else
-            {
-                p++;
-                data->x = j;
-                data->y = i;
-                if (map[i][j] == 'N')
-                    data->map[i][j] = 3;
-                else if (map[i][j] == 'S')
-                    data->map[i][j] = 4;
-                else if (map[i][j] == 'E')
-                    data->map[i][j] = 5;
-                else if (map[i][j] == 'W')
-                    data->map[i][j] = 6;
-                data->e_dir = data->map[i][j] - 3;
-            }
-            j++;
-        }
+            p = fill_tab(data, map, i, &j);
         while(j < data->width)
         {
             data->map[i][j] = 2;
@@ -264,22 +270,15 @@ void    print_data(t_data data)
     printf("Map height : %d\n", data.height);
     print_int_tab(data.map, data.width, data.height);
 }
-int main(int argc, char **argv)
+void    fill_file(char **file, char **av)
 {
-    (void)argc;
     int i;
     int fd;
-    t_data data;
-    
+    char *line;
 
     i = 0;
-    if (argv[1])
-        check_filename(argv[1], 1);
-    fd = open(argv[1], O_RDONLY);
-    char *line = get_next_line(fd);
-    char **file = malloc(sizeof(char *) * 100);
-    char **map = malloc(sizeof(char *) * 100);
-    map = file;
+    fd = open(av[1], O_RDONLY);
+    line = get_next_line(fd);
     while(line)
     {
         line = extract_newline(line);
@@ -288,6 +287,19 @@ int main(int argc, char **argv)
         i++;
     }
     file[i] = NULL;
+}
+int main(int argc, char **argv)
+{
+    (void)argc;
+    t_data data;
+    char **file;
+    char **map;
+    
+    if (argv[1])
+        check_filename(argv[1], 1);
+    file = malloc(sizeof(char *) * 100);
+    fill_file(file, argv);
+    map = file;
     file = collect_identifiers(file);
     check_iden(file, &data);
     map = collect_map(map);

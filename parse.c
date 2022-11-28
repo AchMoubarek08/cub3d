@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/26 17:52:31 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/28 02:12:25 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,16 @@ int	is_mapline(char **file, int i)
 	}
 	return (1);
 }
-
+void	skip_identifiers(char **file, int *i)
+{
+	while(file[*i])
+	{
+		if (is_cellingfloor(file, *i) || is_identifier(file, *i) || str_is_newline(file[*i]) || str_is_space(file[*i]))
+			(*i)++;
+		else
+			break;
+	}
+}
 char **collect_map(char **file)
 {
 	int		i;
@@ -185,13 +194,7 @@ char **collect_map(char **file)
 		i++;
 	map = malloc(sizeof(char *) * (i + 1));
 	i = 0;
-	while(file[i])
-	{
-		if (is_cellingfloor(file, i) || is_identifier(file, i) || str_is_newline(file[i]) || str_is_space(file[i]))
-			i++;
-		else
-			break;
-	}
+	skip_identifiers(file, &i);
 	while(file[i])
 	{
 		while (!is_mapline(file, i))
@@ -206,49 +209,53 @@ char **collect_map(char **file)
 	map[j] = NULL;
 	return(map);
 }
-
+void	init_vars(t_vars *x)
+{
+	x->i = 0;
+	x->j = 0;
+	x->tex = 0;
+	x->cf = 0;
+	x->tab = malloc(sizeof(char *) * 7);
+}
+int	collect_iden(t_vars *x, char **file)
+{
+	if (str_is_space(file[x->i]) || str_is_newline(file[x->i]))
+	{
+		(x->i)++;
+		return (1);
+	}
+	else
+	{
+		if (is_identifier(file, x->i))
+		{
+			x->tab[x->j] = file[x->i];
+			(x->tex)++;
+		}
+		else if (ft_int_strchr(file[x->i], ',') != -1)
+		{
+			x->tab[x->j] = file[x->i];
+			(x->cf)++;
+		}
+		else if(is_mapline(file, x->i))
+			return (2);
+		else if (!str_is_newline(file[x->i]) && !str_is_space(file[x->i]))
+			errors(3);
+	}
+	(x->j)++;
+	(x->i)++;
+	return (0);
+}
 char **collect_identifiers(char **file)
 {
-	int		i;
-	int		tex;
-	int		cf;
-	char	**tab;
-	int		j;
-
-    i = 0;
-	j = 0;
-	tex = 0;
-	cf = 0;
-	tab = malloc(sizeof(char *) * 7);
-    while (file[i])
+	t_vars x;
+	init_vars(&x);
+    while (file[x.i])
     {
-        if (str_is_space(file[i]) || str_is_newline(file[i]))
-        {
-            i++;
-            continue;
-        }
-        else
-        {
-            if (is_identifier(file, i))
-            {
-				tab[j] = file[i];
-                tex++;
-            }
-            else if (ft_int_strchr(file[i], ',') != -1)
-			{
-				tab[j] = file[i];
-                cf++;
-			}
-			else if(is_mapline(file, i))
-				break;
-			else if (!str_is_newline(file[i]) && !str_is_space(file[i]))
-				errors(3);
-        }
-		j++;
-        i++;
+		if(collect_iden(&x, file) == 2)
+			break;
     }
-	if (tex != 4 || cf != 2)
+	x.tab[x.j] = NULL;
+	if (x.tex != 4 || x.cf != 2)
 		errors(3);
-	tab[j] = NULL;
-    return (tab);
+    return (x.tab);
 }
