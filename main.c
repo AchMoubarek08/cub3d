@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 23:50:18 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/28 02:24:36 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/29 01:21:30 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,14 @@
 void	check_filename(char *str, int ex)
 {
 	int	i;
+    int fd;
 
+    fd = open(str, O_RDONLY);
+    if(fd == -1)
+        errors(5);
 	i = 0;
+    if (!strcmp(str + i, ".cub") || !strcmp(str + i, ".xpm"))
+	        errors(2);
 	while (str[i])
 	{
 		if (str[i] == '.')
@@ -224,6 +230,7 @@ int fill_tab(t_data *data, char **map, int i, int *j)
         else if (map[i][*j] == 'W')
             data->map[i][*j] = 6;
         data->e_dir = data->map[i][*j] - 3;
+        data->map[i][*j] = 0;
     }
     (*j)++;
     return(p);
@@ -240,10 +247,14 @@ void    fill_map(t_data *data, char **map)
     data->map = malloc(sizeof(int *) * (data->height + 1));
     while(map[i] && is_mapline(map, i))
     {
+        
         data->map[i] = malloc(sizeof(int) * (data->width + 1));
         j = 0;
         while(map[i][j])
+        {
+            
             p = fill_tab(data, map, i, &j);
+        }
         while(j < data->width)
         {
             data->map[i][j] = 2;
@@ -294,7 +305,8 @@ int main(int argc, char **argv)
     t_data data;
     char **file;
     char **map;
-    
+    if(argc != 2)
+        errors(11);
     if (argv[1])
         check_filename(argv[1], 1);
     file = malloc(sizeof(char *) * 100);

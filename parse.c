@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/28 02:12:25 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/11/29 00:54:23 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,13 +162,16 @@ int	is_mapchar(char c)
 int	is_mapline(char **file, int i)
 {
 	int j;
+
 	j = 0;
+	if(file[i][j] == '\0')
+		return (0);
 	while(file[i][j])
 	{
 		if (is_mapchar(file[i][j]))
 			j++;
 		else
-			return (0);
+			errors(8);
 	}
 	return (1);
 }
@@ -197,14 +200,18 @@ char **collect_map(char **file)
 	skip_identifiers(file, &i);
 	while(file[i])
 	{
-		while (!is_mapline(file, i))
-			i++;
-		while(file[i])
+			
+		if(is_mapline(file, i))
 		{
-			map[j] = ft_strdup(file[i]);
-			i++;
-			j++;
+			while(file[i] && is_mapline(file, i))
+			{
+				map[j] = ft_strdup(file[i]);
+				i++;
+				j++;
+			}
 		}
+		else
+			i++;
 	}
 	map[j] = NULL;
 	return(map);
