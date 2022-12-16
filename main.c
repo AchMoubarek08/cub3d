@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 23:50:18 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/29 01:21:30 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/12/17 00:15:40 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,7 +313,7 @@ int main(int argc, char **argv)
     fill_file(file, argv);
     map = file;
     file = collect_identifiers(file);
-    check_iden(file, &data);
+    check_iden(file);
     map = collect_map(map);
     check_map(map);
     fill_iden(&data, file);

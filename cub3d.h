@@ -53,7 +53,7 @@ char	*remove_spaces(char *colors);
 
 void	check_filename(char *str, int ex);
 char    **collect_identifiers(char **file);
-int     check_iden(char **tab, t_data *data);
+int     check_iden(char **tab);
 char    **collect_map(char **file);
 int     is_mapline(char **file, int i);
 int	    is_identifier(char **file, int i);

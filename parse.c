@@ -6,13 +6,13 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/29 00:54:23 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/12/17 00:34:47 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int check_txt_path(char *path, t_data *data)
+int check_txt_path(char *path)
 {
 	int		i;
 	int		j;
@@ -102,7 +102,7 @@ int	check_cf_colors(char *str)
 	}
 	return(0);
 }
-int	check_iden(char **tab, t_data *data)
+int	check_iden(char **tab)
 {
 	int	i;
     int j;
@@ -116,7 +116,7 @@ int	check_iden(char **tab, t_data *data)
             || (tab[i][j] == 'W' && tab[i][j + 1] == 'E')
             || (tab[i][j] == 'E' && tab[i][j + 1] == 'A'))
         {
-            check_txt_path(ft_substr(tab[i], 2, ft_strlen(tab[i])), data);
+            check_txt_path(ft_substr(tab[i], 2, ft_strlen(tab[i])));
         }
         else if (tab[i][j] == 'F' || tab[i][j] == 'C')
 			check_cf_colors(ft_substr(tab[i], 1, ft_strlen(tab[i])));
@@ -185,6 +185,12 @@ void	skip_identifiers(char **file, int *i)
 			break;
 	}
 }
+int	str_is_nothing(char *str)
+{
+	if(str[0] == '\0')
+		return (1);
+	return (0);
+}
 char **collect_map(char **file)
 {
 	int		i;
@@ -200,7 +206,6 @@ char **collect_map(char **file)
 	skip_identifiers(file, &i);
 	while(file[i])
 	{
-			
 		if(is_mapline(file, i))
 		{
 			while(file[i] && is_mapline(file, i))
@@ -210,8 +215,14 @@ char **collect_map(char **file)
 				j++;
 			}
 		}
-		else
-			i++;
+		while(file[i])
+		{
+			printf("%s\n", file[i]);
+			if((str_is_space(file[i]) || str_is_newline(file[i])))
+				i++;
+			else
+				errors(8);
+		}
 	}
 	map[j] = NULL;
 	return(map);
