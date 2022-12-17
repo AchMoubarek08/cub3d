@@ -58,5 +58,7 @@ char    **collect_map(char **file);
 int     is_mapline(char **file, int i);
 int	    is_identifier(char **file, int i);
 int	    is_cellingfloor(char **file, int i);
+char	*ft_free(char **lost);
+void    ft_free_tab(char **tab);
 
 #endif

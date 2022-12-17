@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 22:31:34 by amoubare          #+#    #+#             */
-/*   Updated: 2022/12/17 00:34:47 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/12/17 01:37:39 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ int check_txt_path(char *path)
 	fd = open(filename + 2, O_RDONLY);
 	if(fd == -1)
 		errors(4);
+	free(path);
+	free(filename);
+	close(fd);
 	return(0);
 }
 char	*remove_spaces(char *colors)
@@ -100,6 +103,7 @@ int	check_cf_colors(char *str)
 			errors(6);
 		i++;
 	}
+	ft_free_tab(colors);
 	return(0);
 }
 int	check_iden(char **tab)

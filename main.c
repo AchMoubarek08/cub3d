@@ -6,7 +6,7 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/30 23:50:18 by amoubare          #+#    #+#             */
-/*   Updated: 2022/12/17 00:15:40 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/12/17 01:35:26 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ void    fill_cf_colors(t_data *data, char *line, int x)
         data->cell = (r << 16) + (g << 8) + b;
     else if(x == 2)
         data->floor = (r << 16) + (g << 8) + b;
+    ft_free_tab(colors);
 }
 void    fill_iden(t_data *data, char **file)
 {
@@ -281,11 +282,24 @@ void    print_data(t_data data)
     printf("Map height : %d\n", data.height);
     print_int_tab(data.map, data.width, data.height);
 }
+void    ft_free_tab(char **tab)
+{
+    int i;
+
+    i = 0;
+    while(tab[i])
+    {
+        free(tab[i]);
+        i++;
+    }
+    free(tab);
+}
 void    fill_file(char **file, char **av)
 {
     int i;
     int fd;
     char *line;
+    char *tmp;
 
     i = 0;
     fd = open(av[1], O_RDONLY);
@@ -294,30 +308,34 @@ void    fill_file(char **file, char **av)
     {
         line = extract_newline(line);
         file[i] = line;
+        ft_free(&tmp);
         line = get_next_line(fd);
+        tmp = line;
         i++;
     }
     file[i] = NULL;
 }
 int main(int argc, char **argv)
 {
+    char **tmp;
     (void)argc;
     t_data data;
     char **file;
+    char **iden;
     char **map;
     if(argc != 2)
         errors(11);
     if (argv[1])
         check_filename(argv[1], 1);
-    file = malloc(sizeof(char *) * 100);
+    file = malloc(sizeof(char *) * 200);
     fill_file(file, argv);
-    map = file;
-    file = collect_identifiers(file);
-    check_iden(file);
-    map = collect_map(map);
+    iden = collect_identifiers(file);
+    check_iden(iden);
+    map = collect_map(file);
     check_map(map);
-    fill_iden(&data, file);
+    fill_iden(&data, iden);
     fill_map(&data, map);
     print_data(data);
+    ft_free_tab(file);
     return (0);
 }
