@@ -6,11 +6,11 @@
 /*   By: amoubare <amoubare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 00:41:55 by amoubare          #+#    #+#             */
-/*   Updated: 2022/11/10 10:52:15 by amoubare         ###   ########.fr       */
+/*   Updated: 2022/12/19 23:08:02 by amoubare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "cub3d_parse.h"
 
 static int	countword(char const *s, char c)
 {

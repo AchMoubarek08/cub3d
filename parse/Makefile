@@ -1,7 +1,7 @@
 
 NAME=cub3d
 CC=cc
-SRC=errors_utils.c main.c parse.c parse_utils.c parse_utils2.c ./gnl/get_next_line.c ./gnl/get_next_line_utils.c
+SRC=errors_utils.c main.c map.c collect.c parse.c parse2.c parse_utils.c parse_utils2.c parse_utils3.c ./gnl/get_next_line.c ./gnl/get_next_line_utils.c
 OBJ=$(SRC:.c=.o)
 SANITIZE=-fsanitize=address
 

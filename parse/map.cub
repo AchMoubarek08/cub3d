@@ -2,10 +2,10 @@
      
 
 
-NO    ./popo.xpm
-SO ./grr.xpm
-WE ./pi pi.xpm
-EA ./popo.xpm
+NO    ./parse/de.xpm
+SO ./parse/de.xpm
+WE ./parse/de.xpm
+EA ./parse/de.xpm
 F 220  ,100,0
 C 225,30,0
 
